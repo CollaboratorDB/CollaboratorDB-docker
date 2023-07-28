@@ -1,0 +1,23 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'Dockerfile'
+  workflow_dispatch:
+
+name: Publish Docker image
+
+jobs:
+  publish_docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v5
+        with:
+          name: ${{ github.repository }}/builder:latest
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
